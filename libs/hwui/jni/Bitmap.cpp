@@ -777,7 +777,7 @@ static binder_status_t writeBlob(AParcel* parcel, uint64_t bitmapId, const SkBit
                                             bitmap.width(), bitmap.height(), size);
         base::unique_fd fd;
 
-        if (com::android::graphics::hwui::flags::bitmap_use_memfd()) {
+/*        if (com::android::graphics::hwui::flags::bitmap_use_memfd()) {
             fd.reset(syscall(__NR_memfd_create, ashmemId.c_str(), MFD_CLOEXEC | MFD_ALLOW_SEALING));
             if (fd.get() < 0) {
                 return STATUS_NO_MEMORY;
@@ -801,7 +801,7 @@ static binder_status_t writeBlob(AParcel* parcel, uint64_t bitmapId, const SkBit
                 return STATUS_UNKNOWN_ERROR;
             }
 
-        } else {
+        } else { */
             fd.reset(ashmem_create_region(ashmemId.c_str(), size));
             if (fd.get() < 0) {
                 return STATUS_NO_MEMORY;
@@ -819,7 +819,7 @@ static binder_status_t writeBlob(AParcel* parcel, uint64_t bitmapId, const SkBit
             if (immutable && ashmem_set_prot_region(fd.get(), PROT_READ) < 0) {
                 return STATUS_UNKNOWN_ERROR;
             }
-        }
+//        }
 
         // Workaround b/149851140 in AParcel_writeParcelFileDescriptor
         int rawFd = fd.release();
