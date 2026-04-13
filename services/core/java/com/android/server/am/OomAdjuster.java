@@ -1456,6 +1456,9 @@ public abstract class OomAdjuster {
     private boolean shouldKillExcessiveProcesses(long nowUptime) {
         final long lastUserUnlockingUptime = mService.mUserController.getLastUserUnlockingUptime();
 
+        if (ActivityManager.isLowRamDeviceStatic())
+            return true;
+
         if (lastUserUnlockingUptime == 0) {
             // No users have been unlocked.
             return !mConstants.mNoKillCachedProcessesUntilBootCompleted;
